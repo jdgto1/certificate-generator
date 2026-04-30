@@ -7,9 +7,11 @@ from reportlab.lib.styles import ParagraphStyle
 from PyPDF2 import PdfReader, PdfWriter
 import io
 
-# --- FUENTES ---
-pdfmetrics.registerFont(TTFont('Arial', 'C:/Windows/Fonts/arial.ttf'))
-pdfmetrics.registerFont(TTFont('Arial-Bold', 'C:/Windows/Fonts/arialbd.ttf'))
+# =========================
+# FUENTES (RELATIVAS → FUNCIONA EN STREAMLIT CLOUD)
+# =========================
+pdfmetrics.registerFont(TTFont('Arial', 'fonts/arial.ttf'))
+pdfmetrics.registerFont(TTFont('Arial-Bold', 'fonts/arialbd.ttf'))
 
 def generate_certificate(data):
     packet = io.BytesIO()
@@ -17,16 +19,20 @@ def generate_certificate(data):
 
     PAGE_WIDTH, PAGE_HEIGHT = letter
 
-    # --- LAYOUT BASE ---
+    # =========================
+    # LAYOUT BASE
+    # =========================
     LEFT = 108
     RIGHT_MARGIN = 40
     usable_width = PAGE_WIDTH - LEFT - RIGHT_MARGIN
 
     NAME_Y = 530
-    COURSE_TOP_Y = 480
+    COURSE_TOP_Y = 505
 
-    # --- ESPACIADO (ritmo vertical consistente) ---
-    SPACING_AFTER_TITLE = 40
+    # =========================
+    # ESPACIADO
+    # =========================
+    SPACING_AFTER_TITLE = 18
     SPACING_AFTER_DETAILS = 18
 
     # =========================
@@ -36,7 +42,7 @@ def generate_certificate(data):
     can.drawString(LEFT, NAME_Y, data["person_name"])
 
     # =========================
-    # CURSO (WRAP REAL)
+    # CURSO (WRAP CORRECTO)
     # =========================
     course_style = ParagraphStyle(
         name="CourseStyle",
@@ -48,10 +54,10 @@ def generate_certificate(data):
 
     course = Paragraph(data["course_name"], course_style)
 
-    # calcular tamaño real del bloque
+    # calcula tamaño real del bloque
     w, h = course.wrap(usable_width, 200)
 
-    # dibujar (crece hacia abajo)
+    # dibuja creciendo hacia abajo
     course.drawOn(can, LEFT, COURSE_TOP_Y - h)
 
     # =========================
