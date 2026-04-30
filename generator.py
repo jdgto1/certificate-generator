@@ -60,7 +60,7 @@ def generate_certificate(data):
     # =========================
     # 🔥 FIX REAL DE ALINEACIÓN
     # =========================
-    BASELINE_OFFSET = 18  # 👈 AJUSTA AQUÍ (12–18 fino)
+    BASELINE_OFFSET = 25  # 👈 AJUSTA AQUÍ (12–18 fino)
 
     course.drawOn(
         can,
