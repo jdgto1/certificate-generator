@@ -29,7 +29,7 @@ def generate_certificate(data):
     NAME_Y = 530
 
     # 🔥 CONTROL ABSOLUTO DEL BLOQUE
-    COURSE_Y = 445   # 👈 AJUSTA SOLO ESTE VALOR
+    COURSE_Y = 410   # 👈 AJUSTA SOLO ESTE VALOR
 
     # =========================
     # NOMBRE
