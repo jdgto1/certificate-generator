@@ -8,7 +8,7 @@ from PyPDF2 import PdfReader, PdfWriter
 import io
 
 # =========================
-# FUENTES (RELATIVAS → FUNCIONA EN STREAMLIT CLOUD)
+# FUENTES (RELATIVAS → CLOUD SAFE)
 # =========================
 pdfmetrics.registerFont(TTFont('Arial', 'fonts/arial.ttf'))
 pdfmetrics.registerFont(TTFont('Arial-Bold', 'fonts/arialbd.ttf'))
@@ -27,7 +27,7 @@ def generate_certificate(data):
     usable_width = PAGE_WIDTH - LEFT - RIGHT_MARGIN
 
     NAME_Y = 530
-    COURSE_TOP_Y = 505
+    COURSE_TOP_Y = 500  # 👈 base ajustada para cloud
 
     # =========================
     # ESPACIADO
@@ -42,7 +42,7 @@ def generate_certificate(data):
     can.drawString(LEFT, NAME_Y, data["person_name"])
 
     # =========================
-    # CURSO (WRAP CORRECTO)
+    # CURSO (WRAP CONTROLADO)
     # =========================
     course_style = ParagraphStyle(
         name="CourseStyle",
@@ -54,18 +54,26 @@ def generate_certificate(data):
 
     course = Paragraph(data["course_name"], course_style)
 
-    # calcula tamaño real del bloque
+    # calcular tamaño real del bloque
     w, h = course.wrap(usable_width, 200)
 
-    # dibuja creciendo hacia abajo
-    course.drawOn(can, LEFT, COURSE_TOP_Y - h)
+    # =========================
+    # 🔥 FIX REAL DE ALINEACIÓN
+    # =========================
+    BASELINE_OFFSET = 14  # 👈 AJUSTA AQUÍ (12–18 fino)
+
+    course.drawOn(
+        can,
+        LEFT,
+        COURSE_TOP_Y - (h - BASELINE_OFFSET)
+    )
 
     # =========================
     # DETALLES
     # =========================
     can.setFont("Arial", 12)
 
-    details_y = COURSE_TOP_Y - h - SPACING_AFTER_TITLE
+    details_y = COURSE_TOP_Y - h - SPACING_AFTER_TITLE + BASELINE_OFFSET
 
     can.drawString(
         LEFT,
