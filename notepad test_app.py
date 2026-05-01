@@ -1,0 +1,4 @@
+import streamlit as st
+
+st.title("Test OK")
+st.write("Streamlit is working.")
