@@ -61,7 +61,7 @@ def generate_certificate(data):
     # =========================
     can.setFont("Arial", 12)
 
-    details_y = COURSE_Y - h - 8
+    details_y = COURSE_Y - h + 15
 
     can.drawString(
         LEFT,
